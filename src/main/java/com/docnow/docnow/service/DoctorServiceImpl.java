@@ -2,6 +2,8 @@ package com.docnow.docnow.service;
 
 import com.docnow.docnow.dao.DoctorDAO;
 import com.docnow.docnow.entity.Doctor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,7 +14,8 @@ public class DoctorServiceImpl implements DoctorService{
 
     private DoctorDAO doctorDAO;
 
-    public DoctorServiceImpl(DoctorDAO doctorDAO) {
+    @Autowired
+    public DoctorServiceImpl(@Qualifier("doctorDAOJPAImpl") DoctorDAO doctorDAO) {
         this.doctorDAO = doctorDAO;
     }
 
