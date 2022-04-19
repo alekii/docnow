@@ -1,45 +1,49 @@
 package com.docnow.docnow.service;
 
-import com.docnow.docnow.dao.DoctorDAO;
+import com.docnow.docnow.dao.DoctorRepository;
 import com.docnow.docnow.entity.Doctor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DoctorServiceImpl implements DoctorService{
 
-    private DoctorDAO doctorDAO;
+    private final DoctorRepository doctorRepository;
 
     @Autowired
-    public DoctorServiceImpl(@Qualifier("doctorDAOJPAImpl") DoctorDAO doctorDAO) {
-        this.doctorDAO = doctorDAO;
+    public DoctorServiceImpl(DoctorRepository doctorRepository) {
+        this.doctorRepository = doctorRepository;
     }
 
     @Override
-    @Transactional
     public List<Doctor> findAll() {
-         return doctorDAO.findAll();
+         return doctorRepository.findAll();
     }
 
     @Override
-    @Transactional
     public Doctor findById(int theId) {
-        return doctorDAO.findById(theId);
+        Optional<Doctor> result = doctorRepository.findById(theId);
+        Doctor theDoctor;
+        if (result.isPresent()){
+            theDoctor = result.get();
+        }
+        else {
+            throw new RuntimeException("Did not find id " +theId);
+        }
+        return theDoctor;
+
     }
 
     @Override
-    @Transactional
     public void save(Doctor theDoctor) {
-        doctorDAO.save(theDoctor);
+        doctorRepository.save(theDoctor);
     }
 
     @Override
-    @Transactional
     public void deleteById(int theId) {
-        doctorDAO.deleteById(theId);
+        doctorRepository.deleteById(theId);
     }
 }
