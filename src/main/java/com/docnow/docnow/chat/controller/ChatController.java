@@ -15,6 +15,7 @@ public class ChatController {
 
    @MessageMapping("/message")
     public Message receiverMessage(@Payload Message message){
+       System.out.println(message);
       template.convertAndSendToUser(message.getReceiverName() ,"/private",message);
       return message;
    }
