@@ -1,4 +1,4 @@
-package com.docnow.docnow.dao;
+package com.docnow.docnow.repository;
 
 import com.docnow.docnow.entity.Patient;
 import org.springframework.data.jpa.repository.JpaRepository;
