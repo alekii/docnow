@@ -30,4 +30,6 @@ public class ChatController {
         template.convertAndSendToUser(String.valueOf(message.getReceiver_id()), "/private", message);
         return message;
     }
+
+
 }
