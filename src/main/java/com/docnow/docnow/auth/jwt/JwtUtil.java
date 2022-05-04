@@ -4,16 +4,19 @@ import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
 import java.util.Date;
 
+@Component
 public class JwtUtil {
-    @Value("${docnow.jwtSecretKey}")
+    @Value("${jwt.secret}")
     private String SECRET_KEY;
-    @Value("${docnow.jwtExpirationtime}")
+    @Value("${jwt.expirationDateInMs}")
     private int EXPIRATION_TIME_MS;
 
     public String generateUsernameFromToken(String jwtToken){

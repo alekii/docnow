@@ -30,23 +30,27 @@ public class SignUp {
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody SignupRequest request) {
 
-        if (userRepository.existsByUsername(request.getUsername())) {
-            return ResponseEntity.badRequest()
-                    .body(new MessageRes("username exists"));
-        }
         UserData user = new UserData(request.getUsername(), passwordEncoder.encode(request.getPassword()));
+
         List<String> rolefromRequest = request.getRole();
         List<Role> roles = new ArrayList<>();
         for(String role : rolefromRequest){
              switch(role){
                  case "admin":
+                     if (userRepository.existsByUsername(request.getUsername())) {
+                     return ResponseEntity.badRequest()
+                             .body(new MessageRes("username exists"));
+                 }
                      Role adminRole = roleRepository.findByRolename(RolesEnum.ADMIN)
                              .orElseThrow(() -> new RuntimeException("error"));
                      roles.add(adminRole);
+                     break;
+
                  case "doctor":
                      Role doctorRole = roleRepository.findByRolename(RolesEnum.DOCTOR)
                              .orElseThrow(() -> new RuntimeException("error"));
                      roles.add(doctorRole);
+                     break;
                  default:
                  case "patient":
                      Role patientRole = roleRepository.findByRolename(RolesEnum.PATIENT)

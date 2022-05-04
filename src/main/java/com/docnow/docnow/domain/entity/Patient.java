@@ -1,4 +1,4 @@
-package com.docnow.docnow.entity;
+package com.docnow.docnow.domain.entity;
 
 import javax.persistence.*;
 import lombok.*;
@@ -22,6 +22,9 @@ public class Patient {
     @Column(name="last_name")
     private String last_name;
 
+    @Column(name="username")
+    private String username;
+
     @Column(name="gender")
     private String gender;
 
@@ -33,4 +36,13 @@ public class Patient {
 
     @Column(name="town")
     private String town;
+
+    public Patient(String username, String first_name, String last_name, int age, String gender, String county, String town) {
+        this.username = username;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.gender= gender;
+        this.county = county;
+         this.town= town;
+    }
 }

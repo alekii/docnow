@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -20,15 +21,15 @@ import javax.servlet.http.HttpServletResponse;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity()
 public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
-    @Bean
-    public JWTFilter jwtFilter(){
-        return new JWTFilter();
-    }
+    @Autowired
+    private JWTFilter jwtFilter;
+
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -59,9 +60,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         //set endpoints
         http.authorizeRequests().antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/docnowchat/**").authenticated()
-                .antMatchers("/admin/**").hasAuthority("ADMIN");
+                .antMatchers("/api/v1/**").denyAll()
+                        .anyRequest().authenticated();
 
         //Check JWT token
-        http.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
      }
 }

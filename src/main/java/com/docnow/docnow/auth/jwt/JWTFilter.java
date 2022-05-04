@@ -6,6 +6,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -17,25 +18,23 @@ import com.docnow.docnow.auth.services.UserDetailsServiceImpl;
 
 import java.io.IOException;
 
+@Component
 public class JWTFilter extends OncePerRequestFilter {
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
-    @Bean
-    public JwtUtil jwtUtil(){
-        return new JwtUtil();
-    }
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
            try{
                //get jwt token from request header
                String AuthToken = request.getHeader("Authorization");
-              if(AuthToken!=null && AuthToken.startsWith("Bearer ")) {
-                  final String jwt = AuthToken.split(" ")[1].trim();
+              if(AuthToken!=null ) {
                   //get user identity
-                  UserDetails userDetails = userDetailsService.loadUserByUsername(jwtUtil().generateUsernameFromToken((jwt)));
+                  UserDetails userDetails = userDetailsService.loadUserByUsername(jwtUtil.generateUsernameFromToken((AuthToken)));
                   //set user identity in security context
                   UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                   authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

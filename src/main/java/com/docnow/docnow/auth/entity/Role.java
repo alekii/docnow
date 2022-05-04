@@ -13,7 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 
 @Entity
-@Table(name="users")
+@Table(name="roles")
 public class Role {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -22,7 +22,7 @@ public class Role {
 
 
     @Enumerated(EnumType.STRING)
-    @Column(name="roles")
+    @Column(name="rolename")
     private RolesEnum rolename;
 
 
