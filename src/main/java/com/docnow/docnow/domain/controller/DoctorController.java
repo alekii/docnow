@@ -45,7 +45,7 @@ public class DoctorController {
                     .body(new MessageResponse( "Doctor added Successfully"));
     }
 
-    @PostMapping("/doctors/find")
+    @GetMapping("/doctors/find")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('DOCTOR') or hasAuthority('PATIENT')")
     public ResponseEntity<?> findDoctor(@RequestBody @NotNull DoctorRequest request){
         Optional<Doctor> doctor = doctorRepository.findByUsername(request.getName());
@@ -95,6 +95,8 @@ public class DoctorController {
         return speciality;
     }
 
+    @GetMapping("doctors/find/specialist")
+    @PreAuthorize("hasAuthority('PATIENT')")
     public ResponseEntity<?> findDoctorBySpeciality(@RequestBody FindBySpecialityRequest request){
         Optional<Doctor> doctor = doctorRepository.findBySpeciality(request.getIllness());
         if(doctor.isPresent()) return ResponseEntity.ok().body(doctor);
