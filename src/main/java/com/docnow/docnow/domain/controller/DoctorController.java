@@ -3,7 +3,9 @@ package com.docnow.docnow.domain.controller;
 import com.docnow.docnow.domain.entity.Doctor;
 import com.docnow.docnow.domain.entity.Speciality;
 import com.docnow.docnow.domain.repository.DoctorRepository;
+import com.docnow.docnow.domain.repository.SpecialityRepository;
 import com.docnow.docnow.domain.request.DoctorRequest;
+import com.docnow.docnow.domain.request.FindBySpecialityRequest;
 import com.docnow.docnow.domain.response.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -24,6 +26,8 @@ import java.util.Set;
 public class DoctorController {
     @Autowired
     private DoctorRepository doctorRepository;
+    @Autowired
+    private SpecialityRepository specialityRepository;
 
     @GetMapping("doctors")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('PATIENT') or hasAuthority('DOCTOR')")
@@ -89,5 +93,11 @@ public class DoctorController {
             speciality.add(newSpeciality);
         }
         return speciality;
+    }
+
+    public ResponseEntity<?> findDoctorBySpeciality(@RequestBody FindBySpecialityRequest request){
+        Optional<Doctor> doctor = doctorRepository.findBySpeciality(request.getIllness());
+        if(doctor.isPresent()) return ResponseEntity.ok().body(doctor);
+        return ResponseEntity.badRequest().body(new MessageResponse("No Doctor with said Speciality was found"));
     }
 }

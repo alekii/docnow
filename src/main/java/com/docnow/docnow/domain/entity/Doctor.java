@@ -45,8 +45,6 @@ public class Doctor {
       this.hospital=hospital;
     }
 
-
-
     //use this to add or remove item since we used Set
     //To maintain sync between doctor and speciality entities
     public void addSpeciality(Speciality specialityArg){
