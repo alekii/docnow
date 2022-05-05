@@ -1,6 +1,8 @@
 package com.docnow.docnow.domain.request;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -10,7 +12,7 @@ public class DoctorRequest {
     private String username;
     private String name;
     private int age;
-    private String speciality;
+    private List<String> speciality;
     private String hospital;
 
     public DoctorRequest(String username){

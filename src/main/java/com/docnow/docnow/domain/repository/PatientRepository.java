@@ -7,6 +7,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import java.util.Optional;
 
 @RepositoryRestResource(path="users")
-public interface PatientRepository extends JpaRepository<Patient, Integer>{
+public interface PatientRepository extends JpaRepository<Patient, Long>{
     Optional<Patient> findByUsername(String username);
 }

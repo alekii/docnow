@@ -14,7 +14,7 @@ import java.util.Date;
 
 @Entity
 @Table(name="chat_users")
-public class ChatUsers {
+public class ChatUser {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="id")
@@ -32,7 +32,7 @@ public class ChatUsers {
     @Column(name="last_seen")
     private Date lastSeen;
 
-    public ChatUsers(int sender_id, int receiver_id) {
+    public ChatUser(int sender_id, int receiver_id) {
         this.from_id =sender_id;
         this.to_id=receiver_id;
     }

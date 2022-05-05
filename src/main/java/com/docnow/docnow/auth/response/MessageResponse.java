@@ -3,7 +3,7 @@ import lombok.*;
 @Getter
 @AllArgsConstructor
 @Setter
-public class MessageRes {
+public class MessageResponse {
     private String message;
 
 }

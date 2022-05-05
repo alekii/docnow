@@ -18,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -33,7 +35,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                                      setAuthority(userdata.getRole()));
     }
 
-    private Collection<? extends GrantedAuthority> setAuthority(List<Role> role){
-        return Collections.singleton(new SimpleGrantedAuthority(role.get(0).getRolename().name()));
+    private Collection<? extends GrantedAuthority> setAuthority(Set<Role> role){
+        return role.stream()
+                .map(r->new SimpleGrantedAuthority(r.getRolename().name()))
+                .collect(Collectors.toList());
     }
 }

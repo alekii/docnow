@@ -1,7 +1,5 @@
 package com.docnow.docnow.chat.Entity;
 
-import com.docnow.docnow.chat.model.Status;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -16,7 +14,7 @@ import lombok.*;
 public class Chat {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name="message_id")
+    @Column(name="id")
     private int id;
 
     @NotBlank
@@ -33,9 +31,9 @@ public class Chat {
     private int deleted_by;
 
     @ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-    private ChatUsers chatUsers;
+    private ChatUser chatUsers;
 
-    public Chat(String message, String status, Date timeSent,ChatUsers chatUsers) {
+    public Chat(String message, String status, Date timeSent, ChatUser chatUsers) {
         this.message=message;
         this.readStatus=status;
         this.timeStamp=timeSent;

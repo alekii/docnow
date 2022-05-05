@@ -1,6 +1,6 @@
 package com.docnow.docnow.auth.entity;
 
-public enum RolesEnum {
+public enum RoleEnum {
     DOCTOR,
     PATIENT,
     ADMIN

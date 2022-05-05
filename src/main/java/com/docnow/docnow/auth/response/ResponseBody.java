@@ -6,7 +6,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class ResBody {
+public class ResponseBody {
     private String username;
     private List<String> Roles;
 }

@@ -1,6 +1,7 @@
 package com.docnow.docnow.domain.controller;
 
 import com.docnow.docnow.domain.entity.Doctor;
+import com.docnow.docnow.domain.entity.Speciality;
 import com.docnow.docnow.domain.repository.DoctorRepository;
 import com.docnow.docnow.domain.request.DoctorRequest;
 import com.docnow.docnow.domain.response.MessageResponse;
@@ -12,8 +13,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/")
@@ -31,7 +34,8 @@ public class DoctorController {
     @PostMapping("/doctors/add")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> addDoctor(@RequestBody DoctorRequest request){
-        Doctor doctor = new Doctor(request.getName(),request.getAge(),request.getSpeciality(),request.getHospital());
+        Set<Speciality>  speciality = SpecialityIntoSet(request.getSpeciality());
+        Doctor doctor = new Doctor(request.getName(),request.getAge(),speciality,request.getHospital());
         doctorRepository.save(doctor);
             return ResponseEntity.ok()
                     .body(new MessageResponse( "Doctor added Successfully"));
@@ -52,11 +56,12 @@ public class DoctorController {
     @PutMapping("/doctors/update")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('DOCTOR')" )
     public ResponseEntity<?>  updatedDoctor(@RequestBody DoctorRequest request){
+       Set<Speciality>  speciality = SpecialityIntoSet(request.getSpeciality());
         Doctor doctor = doctorRepository.findByUsername(request.getName())
                 .orElseThrow(()->new ResourceNotFoundException("Doctor not found"));
          doctor.setName(request.getName());
          doctor.setAge(request.getAge());
-         doctor.setSpeciality(request.getSpeciality());
+         doctor.setSpeciality(speciality);
          doctor.setHospital(request.getHospital());
         doctorRepository.save(doctor);
             return ResponseEntity.ok()
@@ -65,7 +70,7 @@ public class DoctorController {
 
     @DeleteMapping("/doctors/delete/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> deleteDoctor(@PathVariable int id)  {
+    public ResponseEntity<?> deleteDoctor(@PathVariable Long id)  {
       try{  doctorRepository.deleteById(id);
           return ResponseEntity.ok()
                   .body( new MessageResponse(String.format("Doctor with id %s has been deleted",id)));
@@ -75,5 +80,14 @@ public class DoctorController {
       }
       return ResponseEntity.badRequest()
                 .body(new MessageResponse( "Doctor does not exist"));
+    }
+
+    private Set<Speciality> SpecialityIntoSet(List<String> specialityListFromRequest) {
+        Set<Speciality> speciality = new LinkedHashSet<>();
+        for(String s : specialityListFromRequest){
+            Speciality newSpeciality = new Speciality(s);
+            speciality.add(newSpeciality);
+        }
+        return speciality;
     }
 }

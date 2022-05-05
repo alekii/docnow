@@ -67,7 +67,7 @@ public class PatientController {
 
     @DeleteMapping("/users/delete/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> deleteUser(@PathVariable int id)  {
+    public ResponseEntity<?> deleteUser(@PathVariable Long id)  {
         try{  patientRepository.deleteById(id);
             return ResponseEntity.ok()
                     .body( new MessageResponse(String.format("User with id %s has been deleted",id)));

@@ -28,7 +28,7 @@ public class Appointment {
     @Column(name="date")
     private Date appointmentTime;
 
-    @Column(name="status", columnDefinition="String default PENDING")
+    @Column(name="status", columnDefinition="varchar(25) default 'PENDING'")
     private AppointmentStatus appointmentStatus;
 
     public Appointment(String doctorUsername,String patientUsername,Date appointmentTime) {
