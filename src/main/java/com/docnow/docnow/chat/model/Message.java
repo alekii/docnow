@@ -10,8 +10,8 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Message {
-    private int sender_id;
-    private  int receiver_id;
+    private String sender_id;
+    private  String receiver_id;
     private String message;
     private Status status;
     private Date timeSent;

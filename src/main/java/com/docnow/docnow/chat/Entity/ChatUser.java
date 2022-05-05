@@ -6,34 +6,48 @@ import javax.validation.constraints.Size;
 
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
 @Setter
 
 @Entity
-@Table(name="chat_users")
+@Table(name="chatUsers")
 public class ChatUser {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="id")
-    private int id;
+    private long id;
 
     @NotBlank
     @Size(max=256)
     @Column(name="sender_id")
-    private int from_id;
+    private String from_id;
     @NotBlank
     @Column(name="recipient_id")
-    private int to_id;
+    private String to_id;
     @Column(name="last_message")
     private String lastMessage;
     @Column(name="last_seen")
     private Date lastSeen;
 
-    public ChatUser(int sender_id, int receiver_id) {
+    @OneToMany(mappedBy = "chatUsers",
+                              cascade = CascadeType.ALL,
+                               orphanRemoval = true)
+    private List<Chat> chats = new ArrayList<>();
+
+    public ChatUser(String sender_id, String receiver_id) {
         this.from_id =sender_id;
         this.to_id=receiver_id;
     }
+
+    //add methods to ensure synchronization
+     public void addChat(Chat chat){
+        chats.add(chat);
+        chat.setChatUser(this);
+     }
+
 }

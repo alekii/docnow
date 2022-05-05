@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Date;
+
 import lombok.*;
 @NoArgsConstructor
 @Getter
@@ -15,7 +16,7 @@ public class Chat {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="id")
-    private int id;
+    private long id;
 
     @NotBlank
     @Size(max=256)
@@ -33,11 +34,26 @@ public class Chat {
     @ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
     private ChatUser chatUsers;
 
-    public Chat(String message, String status, Date timeSent, ChatUser chatUsers) {
+    public Chat(String message, String status, Date timeSent) {
         this.message=message;
         this.readStatus=status;
         this.timeStamp=timeSent;
-        this.chatUsers = chatUsers;
     }
 
+    public void setChatUser(ChatUser chatUser) {
+        this.chatUsers = chatUser;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Chat chat = (Chat) o;
+        return id == chat.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

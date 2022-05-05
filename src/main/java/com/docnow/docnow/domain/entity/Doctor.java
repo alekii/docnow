@@ -65,7 +65,6 @@ public class Doctor {
         if(!(getClass() == obj.getClass())){
             return false;
         }
-        // int cannot work here. id is of type Long
         return id !=null && id.equals(((Doctor)obj).getId());
     }
 

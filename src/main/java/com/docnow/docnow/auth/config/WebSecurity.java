@@ -61,7 +61,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/docnowchat/**").authenticated()
                 .antMatchers("/api/v1/**").denyAll()
-                        .anyRequest().authenticated();
+                .anyRequest().authenticated();
 
         //Check JWT token
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

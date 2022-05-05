@@ -24,12 +24,10 @@ public class ChatController {
     @MessageMapping("/message")
     public Message receiverMessage(@Payload Message message) {
         ChatUser chatUser = new ChatUser(message.getSender_id(),message.getReceiver_id());
-        Chat chat = new Chat(message.getMessage(), message.getStatus().name(), message.getTimeSent(),chatUser);
+        Chat chat = new Chat(message.getMessage(), message.getStatus().name(), message.getTimeSent());
+        chatUser.addChat(chat);
         chatUsersRepository.save(chatUser);
-        chatRepository.save(chat);
         template.convertAndSendToUser(String.valueOf(message.getReceiver_id()), "/private", message);
         return message;
     }
-
-
 }
