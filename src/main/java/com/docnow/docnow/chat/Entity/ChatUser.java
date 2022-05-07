@@ -14,20 +14,19 @@ import java.util.List;
 @Getter
 @Setter
 
-@Entity
-@Table(name="chatUsers")
+@Entity()
+@Table(name="chatUsers" )
 public class ChatUser {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="id")
     private long id;
 
     @NotBlank
     @Size(max=256)
-    @Column(name="sender_id")
+    @Column(name="sender_id" )
     private String from_id;
     @NotBlank
-    @Column(name="recipient_id")
+    @Column(name="recipient_id" )
     private String to_id;
     @Column(name="last_message")
     private String lastMessage;
@@ -37,9 +36,10 @@ public class ChatUser {
     @OneToMany(mappedBy = "chatUsers",
                               cascade = CascadeType.ALL,
                                orphanRemoval = true)
-    private List<Chat> chats = new ArrayList<>();
+    private List<Chat> chats;
 
-    public ChatUser(String sender_id, String receiver_id) {
+    public ChatUser(long id,String sender_id, String receiver_id) {
+        this.id=id;
         this.from_id =sender_id;
         this.to_id=receiver_id;
     }
@@ -49,5 +49,4 @@ public class ChatUser {
         chats.add(chat);
         chat.setChatUser(this);
      }
-
 }
